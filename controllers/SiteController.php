@@ -14,6 +14,7 @@ use app\models\PostSearch;
 use yii\widgets\ActiveForm;
 use yii\data\ActiveDataProvider;
 use app\models\SignupForm;
+use app\models\User;
 
 class SiteController extends Controller
 {
@@ -173,10 +174,18 @@ class SiteController extends Controller
     
     public function actionSignup(){
         if (!Yii::$app->user->isGuest) {
-        return $this->goHome();
+            return $this->goHome();
         }
         $model = new SignupForm();
-        
+        if($model->load(\Yii::$app->request->post()) && $model->validate()) {
+            $user = new User();
+            $user->username = $model->username;
+            $user->password = \Yii::$app->security->generatePasswordHash($model->password);
+            if($user->save()) {
+                Yii::$app->user->login($user, 0);
+                return $this->goHome();
+            }
+        }
         return $this->render('signup', compact('model'));
-       }
+    }
 }

@@ -19,7 +19,7 @@ class PostSearch extends Post
     {
         return [
             [['id'], 'integer'],
-            [['title', 'created_at', 'updated_at', 'text', 'search_text', 'preview'], 'safe'],
+            [['title', 'created_at', 'updated_at', 'text', 'search_text', 'preview', 'author_id', 'likes'], 'safe'],
         ];
     }
 
@@ -65,6 +65,10 @@ class PostSearch extends Post
             'id' => $this->id,
             //'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+        ]);
+
+        $query->andFilterWhere([
+            'author_id' => $this->author_id
         ]);
         
         $query->andFilterWhere(['>=', 'created_at', $this->created_at]);

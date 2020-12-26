@@ -13,5 +13,5 @@ $this->title = 'Blog';
 
 echo ListView::widget([
     'dataProvider' => $dataProvider,
-    'itemView' => '_post',
+    'itemView' => '/post/_post_preview',
 ]);
