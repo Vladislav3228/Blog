@@ -78,7 +78,7 @@ class PostController extends Controller
      * @return mixed
      */
     public function actionCreate()
-    {
+    { 
         if(Yii::$app->user->can('createPost')) {
             $model = new Post();
             

@@ -9,6 +9,12 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use yii\imagine\Image;
+use Imagine\Image\Box;
+use app\models\User;
+
+$source="http://localhost/blog/ui/round-account-button-with-user-inside_icon-icons.com_72596.png";        
+$imagine = new Image();
 
 AppAsset::register($this);
 ?>
@@ -28,15 +34,43 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
+
+    // use yii\bootstrap4\NavBar;
+    // use yii\bootstrap4\Nav;
+    // use kartik\bs4dropdown\Dropdown;
+    // use yii\helpers\Html;
+
+    // NavBar::begin([
+    //     'brandLabel' => '',
+    //     'brandOptions' => ['class'=>'p-0'],
+    //     'options' => ['class' => 'navbar navbar-expand-lg navbar-dark bg-info']
+    // ]);
+    // echo Nav::widget([
+    //     'items' => [
+    //         ['label' => '', 'url' => ['/site/index']],
+    //         [
+    //             'label' => '', 
+    //             'items' => [
+                    
+    //             ],
+    //         ],
+    //         ['label' => '', 'url' => ['/site/about']],
+    //     ],
+    //     'dropdownClass' => Dropdown::classname(), // use the custom dropdown
+    //     'options' => ['class' => 'navbar-nav mr-auto'],
+    // ]);
+    // NavBar::end();
+
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
+            'style' => 'background-color: #e3f2fd;'
         ],
     ]);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
+        'options' => ['class' => 'navbar-nav navbar-right', 'style' => 'background-color: #fff2fd;'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
@@ -48,6 +82,16 @@ AppAsset::register($this);
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
                     'Logout (' . Yii::$app->user->identity->username . ')',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>'
+            ),
+            Yii::$app->user->isGuest ? : (
+                '<li>'
+                . Html::beginForm(['/users/profile'])
+                . Html::submitButton(
+                    '<div class = "navbar-nav navbar-left", style = "margin-right: 10px;"> '.Yii::$app->user->identity->username.' </div>'.'<img src="data:image/png;base64,'.base64_encode($imagine->getImagine()->open($source)->resize(new Box(18, 18))).'" >',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()
