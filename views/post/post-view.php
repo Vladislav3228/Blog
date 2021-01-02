@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\HtmlPurifier;
 use yii\models\Post;
+use \yii\widgets\Pjax;
 
 $this->title = 'Post';
 $this->params['breadcrumbs'][] = $this->title;
@@ -21,10 +22,9 @@ $this->params['breadcrumbs'][] = $this->title;
             text-align: right; /* Выравнивание по правому краю */
         }
     </style>
+    
     <h1><b><center><?php echo Html::encode($model->title); ?></center></b></h1>
     <!-- <h2><center><?= Html::encode($model->title) ?></center></h2> -->
-    <br>
-    <?= HtmlPurifier::process($model->preview) ?>
     <br>
     <?= HtmlPurifier::process($model->text) ?>
     <br>
@@ -38,6 +38,32 @@ $this->params['breadcrumbs'][] = $this->title;
             <td class="rightcol"><?= $model->updated_at ?></td>
         </tr>
     </table>
+
+    <?php Pjax::begin([
+        'id'                 => 'like-pjax',
+        'enablePushState'    => false,
+        'enableReplaceState' => false,
+        'linkSelector'       => '#like-pjax a',
+        'timeout'            => 10000,
+    ]);
+    ?>
+
+    <?php if (empty($like)) { ?>
+
+    <hr>
+    <?= Html::a('LIKE', ['post/post-view', 'like' => 1, 'id' => $model->id]) ?>
+
+    <?= Html::a('DISLIKE', ['post/post-view', 'like' => -1, 'id' => $model->id]) ?>
+
+    <?php } else { ?>
+
+        <hr>
+        <p>
+            <?= ($like == 1) ? 'Стоит ваш царский лайк' : 'Не, ну это бан'; ?>
+        </p>
+
+    <?php } Pjax::end()?>
+
     <br>
     <br>
     <br>

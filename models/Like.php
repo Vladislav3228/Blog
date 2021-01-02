@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "likes".
+ * This is the model class for table "like".
  *
  * @property int $post_id
  * @property int $user_id
@@ -13,14 +13,14 @@ use Yii;
  * @property Post $post
  * @property User $user
  */
-class Likes extends \yii\db\ActiveRecord
+class Like extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'likes';
+        return 'like';
     }
 
     /**
@@ -30,7 +30,7 @@ class Likes extends \yii\db\ActiveRecord
     {
         return [
             [['post_id', 'user_id'], 'required'],
-            [['post_id', 'user_id'], 'integer'],
+            [['post_id', 'user_id', 'like'], 'integer'],
             [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Post::className(), 'targetAttribute' => ['post_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];

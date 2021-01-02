@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\ForbiddenHttpException;
 use yii\helpers\ArrayHelper;
+use app\models\Like;
 
 /**
  * PostController implements the CRUD actions for Post model.
@@ -136,10 +137,29 @@ class PostController extends Controller
         }
     }
 
-    public function actionPostView($id)
+    public function actionPostView($id, $like = null)
     {
+        $model = $this->findModel($id);
+
+        $data = Like::find()->where(['user_id' => Yii::$app->user->id, 'post_id' => $id])->one();
+
+        if (!empty($like)) {
+            if (empty($data)) {
+                $data = new Like;
+                $data->post_id = $post_id;
+                $data->user_id = Yii::$app->user->id;
+            }
+            $data->like = $like;
+            $data->save();
+        } else {
+            if (!empty($data)) {
+                $like = $data->like;
+            }
+        }
+
         return $this->render('post-view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'like' => $like,
         ]);
     }
 
